@@ -1,0 +1,19 @@
+name: Dockerhub Image CI
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    name: Build Docker image and push to DockerHub
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Log in to Dockerhub
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build Docker image
+        run: docker build -t timriley98/compas-ci:${GITHUB_SHA::8} .
+      - name: Push Docker image
+        run: docker push timriley98/compas-ci:${GITHUB_SHA::8}
+        
