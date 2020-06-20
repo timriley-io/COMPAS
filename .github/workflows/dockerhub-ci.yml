@@ -2,7 +2,7 @@ name: Dockerhub Image CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, dev ]
 
 jobs:
   build:
@@ -13,7 +13,7 @@ jobs:
       - name: Log in to Dockerhub
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
       - name: Build Docker image
-        run: docker build -t timriley98/compas-ci:${GITHUB_SHA::8} .
+        run: docker build -t timriley98/compas-ci-${{ github.head_ref }} .
       - name: Push Docker image
-        run: docker push timriley98/compas-ci:${GITHUB_SHA::8}
+        run: docker push timriley98/compas-ci-${{ github.head_ref }}
         
